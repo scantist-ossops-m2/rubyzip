@@ -153,6 +153,11 @@ module Zip
         return self
       end
 
+      if @name.squeeze('/') =~ /\.{2}(?:\/|\z)/
+        puts "WARNING: skipped \"../\" path component(s) in #{@name}"
+        return self
+      end
+
       if directory? || file? || symlink?
         self.__send__("create_#{@ftype}", dest_path, &block)
       else
